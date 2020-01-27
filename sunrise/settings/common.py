@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'sass_processor',
     'bulma',
+    'django_tables2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

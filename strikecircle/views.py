@@ -245,6 +245,11 @@ class DataEntry(LoginRequiredMixin, TemplateView):
         return data
 
 
+class PledgeListView(ListView):
+    model = Pledge
+    template_name = 'strikecircle/pledge.html'
+
+
 class UpdateStrikeCircle(UpdateView):
     model = StrikeCircle
     form_class = StrikeCircleEditForm

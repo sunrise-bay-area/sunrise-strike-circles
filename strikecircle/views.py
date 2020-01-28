@@ -12,9 +12,11 @@ from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
+from django_tables2 import SingleTableView
 
 from strikecircle.forms import CreatePledge, SignupForm, StrikeCircleCreateForm, StrikeCircleEditForm
 from strikecircle.models import Pledge, StrikeCircle
+from strikecircle.tables import PledgeTable
 
 
 class Signup(CreateView):
@@ -245,8 +247,9 @@ class DataEntry(LoginRequiredMixin, TemplateView):
         return data
 
 
-class PledgeListView(ListView):
+class PledgeListView(SingleTableView):
     model = Pledge
+    table_class = PledgeTable
     template_name = 'strikecircle/pledge.html'
 
 

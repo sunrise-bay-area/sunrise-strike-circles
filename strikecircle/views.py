@@ -1,17 +1,16 @@
-import copy
 import datetime
 
+import datatableview
+from datatableview.views import XEditableDatatableView, Datatable
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db.models import Count, F, Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.list import ListView
 
 from strikecircle.forms import CreatePledge, SignupForm, StrikeCircleCreateForm, StrikeCircleEditForm
 from strikecircle.models import Pledge, StrikeCircle
@@ -170,6 +169,25 @@ class DataInput(LoginRequiredMixin, TemplateView):
         })
 
         return context
+
+
+class PledgeSettings(Datatable):
+    first_name = datatableview.TextColumn(label='First Name', sources='first_name')
+    last_name = datatableview.TextColumn(label='Last Name', sources='last_name')
+    email = datatableview.TextColumn(label='Email Address', sources='email')
+    zipcode = datatableview.TextColumn(label='Zipcode', sources='zipcode')
+    week_pledged = datatableview.DateColumn(label='Week Pledged', sources='date_collected')
+    one_on_one = datatableview.BooleanColumn(label='One-on-one completed?', sources='one_on_one')
+
+    class Meta:
+        model = Pledge
+        columns = ['first_name', 'last_name', 'email', 'zipcode', 'week_pledged', 'one_on_one']
+
+
+class PledgeTable(XEditableDatatableView):
+    template_name = 'strikecircle/pledge_dashboard.html'
+    model = Pledge
+    datatable_class = PledgeSettings
 
 
 class DataEntry(LoginRequiredMixin, TemplateView):

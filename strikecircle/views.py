@@ -1,6 +1,7 @@
 import datetime
 
 import datatableview
+from datatableview import helpers
 from datatableview.views import XEditableDatatableView, Datatable
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -172,16 +173,17 @@ class DataInput(LoginRequiredMixin, TemplateView):
 
 
 class PledgeSettings(Datatable):
-    first_name = datatableview.TextColumn(label='First Name', sources='first_name')
-    last_name = datatableview.TextColumn(label='Last Name', sources='last_name')
-    email = datatableview.TextColumn(label='Email Address', sources='email')
-    zipcode = datatableview.TextColumn(label='Zipcode', sources='zipcode')
+    first_name = datatableview.TextColumn(label='First Name', sources='first_name', processor=helpers.make_xeditable)
+    last_name = datatableview.TextColumn(label='Last Name', sources='last_name', processor=helpers.make_xeditable)
+    email = datatableview.TextColumn(label='Email Address', sources='email', processor=helpers.make_xeditable)
+    zipcode = datatableview.TextColumn(label='Zipcode', sources='zipcode', processor=helpers.make_xeditable)
     week_pledged = datatableview.DateColumn(label='Week Pledged', sources='date_collected')
-    one_on_one = datatableview.BooleanColumn(label='One-on-one completed?', sources='one_on_one')
+    one_on_one = datatableview.BooleanColumn(label='One-on-one completed?', sources='one_on_one',
+                                             processor=helpers.make_boolean_checkmark)
 
     class Meta:
         model = Pledge
-        columns = ['first_name', 'last_name', 'email', 'zipcode', 'week_pledged', 'one_on_one']
+        columns = []
 
 
 class PledgeTable(XEditableDatatableView):

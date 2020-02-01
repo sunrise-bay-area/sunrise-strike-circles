@@ -16,10 +16,6 @@ from .env import env
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
@@ -78,9 +74,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'sunrise_strike_circles',
-        'USER': 'jesse',
-        'PASSWORD': 'local',
-        'HOST': 'localhost',
+        'USER': env('POSTGRES_USERNAME'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'HOST': env('POSTGRES_HOST'),
         'PORT': 5432
     }
 }
@@ -171,8 +167,6 @@ LOGGING = {
         }
     }
 }
-
-SITE_URL = env('SITE_URL')
 
 DATE_FORMAT = 'Y-m-d'
 

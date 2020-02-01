@@ -177,7 +177,8 @@ class PledgeSettings(Datatable):
     last_name = datatableview.TextColumn(label='Last Name', sources='last_name', processor=helpers.make_xeditable)
     email = datatableview.TextColumn(label='Email Address', sources='email', processor=helpers.make_xeditable)
     zipcode = datatableview.TextColumn(label='Zipcode', sources='zipcode', processor=helpers.make_xeditable)
-    week_pledged = datatableview.DateColumn(label='Week Pledged', sources='date_collected')
+    date_collected = datatableview.DateColumn(label='Week Pledged', sources='date_collected',
+                                              processor=helpers.make_xeditable)
     one_on_one = datatableview.BooleanColumn(label='One-on-one completed?', sources='one_on_one',
                                              processor=helpers.make_boolean_checkmark)
 

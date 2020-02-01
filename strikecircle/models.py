@@ -35,24 +35,24 @@ class StrikeCircle(models.Model):
         return f"<StrikeCircle {self.name}>"
 
 
+YEAR_CHOICES = [(i, i) for i in range(date.today().year, 1900, -1)]
+# Strike Circles meet for the first time the week of 2/10/2020, and start canvassing the following week
+DAYS_PER_WEEK = 7
+START_WEEK = 2
+"""
+TODO: Figure out why replacing `date(2020, 2, 10)` with FIRST_SC_MEETING_WEEK in DATA_COLLECTED_DATES results in
+"NameError: name 'FIRST_SC_MEETING_WEEK' is not defined"
+"""
+FIRST_SC_MEETING_WEEK = date(2020, 2, 10)
+NUM_DATA_COLLECTION_WEEKS = 5
+DATA_COLLECTED_DATES = [
+    (date(2020, 2, 10) + timedelta(weeks=(i - 1)), f'Week {i}' if i is not 7 else 'Post Strike Circle')
+    for i in range(START_WEEK, START_WEEK + NUM_DATA_COLLECTION_WEEKS + 1)]
+
+
 class Pledge(models.Model):
-    YEAR_CHOICES = [(i, i) for i in range(date.today().year, 1900, -1)]
-
-    # Strike Circles meet for the first time the week of 2/10/2020, and start canvassing the following week
-    DAYS_PER_WEEK = 7
-    START_WEEK = 2
-    """
-    TODO: Figure out why replacing `date(2020, 2, 10)` with FIRST_SC_MEETING_WEEK in DATA_COLLECTED_DATES results in
-    "NameError: name 'FIRST_SC_MEETING_WEEK' is not defined"
-    """
-    FIRST_SC_MEETING_WEEK = date(2020, 2, 10)
-    NUM_DATA_COLLECTION_WEEKS = 5
-    DATA_COLLECTED_DATES = [(date(2020, 2, 10) + timedelta(weeks=(i - 1)), f'Week {i}' if i is not 7 else 'Post Strike Circle')
-                                for i in range(START_WEEK, START_WEEK + NUM_DATA_COLLECTION_WEEKS + 1)]
-
     PLEDGES_TEMPLATE_NAME = "pledges"
     ONE_ON_ONES_TEMPLATE_NAME = "one-on-ones"
-
 
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)

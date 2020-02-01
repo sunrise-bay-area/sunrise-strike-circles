@@ -15,7 +15,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 
 from strikecircle.forms import CreatePledgeFormSet, SignupForm, StrikeCircleCreateForm, StrikeCircleEditForm
-from strikecircle.models import Pledge, StrikeCircle
+from strikecircle.models import Pledge, StrikeCircle, DATA_COLLECTED_DATES, YEAR_CHOICES
 
 
 class Signup(CreateView):
@@ -204,7 +204,8 @@ class PledgeSettings(Datatable):
     last_name = datatableview.TextColumn(label='Last Name', sources='last_name', processor=helpers.make_xeditable)
     email = datatableview.TextColumn(label='Email Address', sources='email', processor=helpers.make_xeditable)
     zipcode = datatableview.TextColumn(label='Zipcode', sources='zipcode', processor=helpers.make_xeditable)
-    date_collected = datatableview.DateColumn(label='Week Pledged', sources='date_collected',
+    yob = datatableview.IntegerColumn(label='YOB', source='yob', processor=helpers.make_xeditable)
+    date_collected = datatableview.DateColumn(label='Week Pledged', source='date_collected',
                                               processor=helpers.make_xeditable)
     one_on_one = datatableview.BooleanColumn(label='One-on-one completed?', sources='one_on_one',
                                              processor=helpers.make_boolean_checkmark)

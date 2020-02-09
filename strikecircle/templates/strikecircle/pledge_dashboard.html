@@ -1,0 +1,50 @@
+{% extends 'base_template.html' %}
+{% load sc_tags sass_tags static %}
+
+{% block subtitle %}Data Input{% endblock subtitle %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% sass_src 'strikecircle/sass/table.sass' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="{% sass_src 'strikecircle/sass/data_input_dashboard.sass' %}">
+    <link href="{% static 'datepicker/css/datepicker.css' %}" rel="stylesheet"/>
+    <link href="{% static 'strikecircle/sass/custom-bootstrap-glyphicons.css' %}" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+{% endblock extra_css %}
+
+{% block content %}
+    <div class="data-input">
+        <div class="title is-3 page-title">Strike Circle Pledge Tracker</div>
+        <div class="level">
+            <div class="level-left">
+                <div class="sunrise-button primary">Add new pledges</div>
+            </div>
+            <div class="level-right">
+                <div class="sunrise-button primary">Edit pledges</div>
+            </div>
+        </div>
+        <!-- Render the table skeleton, includes the .datatable class for the on-ready initializer. -->
+        {{ datatable }}
+    </div>
+
+{% endblock %}
+
+{% block extra_javascript %}
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'datepicker/js/bootstrap-datepicker.js' %}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+    <!-- Load js for initializing tables via their server-side options -->
+    <script type="text/javascript" charset="utf8" src="{% static 'datatableview/js/datatableview.js' %}"></script>
+    <script type="text/javascript">
+        $.fn.editable.defaults.mode = 'inline';
+        datatableview.auto_initialize = false;
+        $(function () {
+            datatableview.initialize($('.datatable'), {
+                fnRowCallback: datatableview.make_xeditable({}),
+            });
+        })
+    </script>
+{% endblock extra_javascript %}

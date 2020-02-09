@@ -1,21 +1,21 @@
-import copy
 import datetime
 
+import datatableview
+from datatableview import helpers
+from datatableview.views import XEditableDatatableView, Datatable
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.db.models import Count, F, Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.list import ListView
 
 from strikecircle.forms import CreatePledgeFormSet, SignupForm, StrikeCircleCreateForm, StrikeCircleEditForm
-from strikecircle.models import Pledge, StrikeCircle
+from strikecircle.models import Pledge, StrikeCircle, DATA_COLLECTED_DATES, YEAR_CHOICES
 
 
 class Signup(CreateView):
@@ -197,6 +197,28 @@ class DataInput(SunriseLoginRequiredMixin, TemplateView):
         })
 
         return context
+
+
+class PledgeSettings(Datatable):
+    first_name = datatableview.TextColumn(label='First Name', sources='first_name', processor=helpers.make_xeditable)
+    last_name = datatableview.TextColumn(label='Last Name', sources='last_name', processor=helpers.make_xeditable)
+    email = datatableview.TextColumn(label='Email Address', sources='email', processor=helpers.make_xeditable)
+    zipcode = datatableview.TextColumn(label='Zipcode', sources='zipcode', processor=helpers.make_xeditable)
+    yob = datatableview.IntegerColumn(label='YOB', source='yob', processor=helpers.make_xeditable)
+    date_collected = datatableview.DateColumn(label='Week Pledged', source='date_collected',
+                                              processor=helpers.make_xeditable)
+    one_on_one = datatableview.BooleanColumn(label='One-on-one completed?', sources='one_on_one',
+                                             processor=helpers.make_boolean_checkmark)
+
+    class Meta:
+        model = Pledge
+        columns = []
+
+
+class PledgeTable(XEditableDatatableView):
+    template_name = 'strikecircle/pledge_dashboard.html'
+    model = Pledge
+    datatable_class = PledgeSettings
 
 
 class UpdateStrikeCircle(SunriseLoginRequiredMixin, UpdateView):
